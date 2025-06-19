@@ -8,7 +8,7 @@ import numpy as np
 # ✅ Corrección aquí: __name__ con doble guion bajo
 app = Flask(__name__)
 
-# Configurar el registro
+# Configurar el registrodxd
 logging.basicConfig(level=logging.DEBUG)
 
 # Cargar el modelo entrenado
