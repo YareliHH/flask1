@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clasificador de Insectos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1565c0;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function clasificarInsecto(event) {
+            event.preventDefault();
+            const abdomen = document.getElementById('abdomen').value;
+            const antenna = document.getElementById('antenna').value;
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `abdomen=${abdomen}&antenna=${antenna}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('resultado').innerText = 'Error: ' + data.error;
+                    document.getElementById('resultado').style.color = '#d32f2f';
+                } else {
+                    document.getElementById('resultado').innerText = 'El insecto es una ' + data.categoría;
+                    document.getElementById('resultado').style.color = '#2e7d32';
+                }
+            })
+            .catch(error => {
+                document.getElementById('resultado').innerText = 'Error en la solicitud.';
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Clasificador de Insectos</h1>
+    <form id="formulario" onsubmit="clasificarInsecto(event)">
+        <label for="abdomen">Longitud del Abdomen:</label>
+        <input type="text" id="abdomen" name="abdomen">
+
+        <label for="antenna">Longitud de las Antenas:</label>
+        <input type="text" id="antenna" name="antenna">
+
+        <input type="submit" value="Clasificar">
+    </form>
+    <p id="resultado"></p>
+</body>
+</html>
