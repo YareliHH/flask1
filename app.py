@@ -5,7 +5,7 @@ import pandas as pd
 import logging
 import numpy as np
 
-# ✅ Corrección aquí: __name__ con doble guion bajo
+#  Corrección aquí: __name__ con doble guion bajo
 app = Flask(__name__)
 
 # Configurar el registrodxd
@@ -58,6 +58,6 @@ def predict():
         app.logger.error(f'Error en la predicción: {str(e)}')
         return jsonify({'error': str(e)}), 400
 
-# ✅ Corrección aquí también: __name__ y __main__ con doble guion bajo
+# Corrección aquí también: __name__ y __main__ con doble guion bajo
 if __name__ == '__main__':
     app.run(debug=True)
